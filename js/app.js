@@ -38,25 +38,34 @@ var all_cards = ["fa fa-diamond",
 var user_info = {
     point: 0,
     move_step: 0,
+    seconds: 0,
     first_click: 0,
     second_click: 0,
+    stars: $('.stars li').children().length,
 
 }
-
+var time_id = null;
 game_init()
 //游戏初始化
 function game_init() {
     user_info.point = 0;
     user_info.move_step = 0;
+    user_info.seconds = 0;
+    user_info.stars = $('.stars li').children().length;
+    $('.stars li').children().attr('class', 'fa fa-star');
     $('.moves').html(user_info.move_step); //user move step number
     cards_init() //初始化已翻牌卡牌
     get_math_random(); //生成随即卡牌场景
+    clearInterval(time_id);
 }
 $('.restart').click(function() { //游戏重开
     game_init();
 });
 
 $(".card").click(function() { //监听用户动作
+    if (user_info.move_step == 0) {
+        time_start(); //开始计时
+    }
     if ($(".open").length < 2) { //锁定同时翻开卡牌数量
         $(this).attr('class', 'card open show');
         user_info.move_step++;
@@ -84,6 +93,23 @@ $(".card").click(function() { //监听用户动作
     }
 });
 
+function time_start() {
+    var i = 0;
+    time_id = self.setInterval(function() {
+        user_info.seconds++;
+        if (user_info.seconds == 100 || user_info.seconds == 30 || user_info.seconds == 50) {
+            remove_star(i); //remove star
+            i++;
+        }
+    }, 1000);
+}
+
+function remove_star(i) {
+    $(".stars li:eq(" + i + ")").children().attr('class', 'fa fa-star-o');
+    user_info.stars--;
+
+}
+
 function time_count(first_card, second_card) {
     if (!first_card || !second_card) {
         console.log('no first card or second card')
@@ -106,8 +132,10 @@ function check_match(first_card, second_card) {
 
 function check_game() {
     if ($(".match").length == 16) {
-        console.log(user_info.point);
-        alert('win point:' + user_info.point);
+        setTimeout(function() {
+            alert('win point:' + user_info.point + ' stars: ' + user_info.stars)
+        }, 1500);
+        clearInterval(time_id);
     }
 }
 
