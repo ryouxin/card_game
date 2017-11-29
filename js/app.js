@@ -15,8 +15,8 @@
 /*
     规定随即卡牌属性
 */
-var li_array = [];
-var all_cards = ["fa fa-diamond",
+var liArray = [];
+const allCards = ["fa fa-diamond",
     "fa fa-paper-plane-o",
     "fa fa-anchor",
     "fa fa-bolt",
@@ -35,55 +35,56 @@ var all_cards = ["fa fa-diamond",
 ];
 
 // user info
-var user_info = {
+var userInfo = {
     point: 0,
-    move_step: 0,
+    moveStep: 0,
     seconds: 0,
-    first_click: 0,
-    second_click: 0,
+    firstClick: 0,
+    secondClick: 0,
     stars: $('.stars li').children().length,
 
 }
-var time_id = null;
-game_init()
+var timeId = null;
+gameInit()
 //游戏初始化
-function game_init() {
-    user_info.point = 0;
-    user_info.move_step = 0;
-    user_info.seconds = 0;
-    user_info.stars = $('.stars li').children().length;
+function gameInit() {
+    userInfo.point = 0;
+    userInfo.moveStep = 0;
+    userInfo.seconds = 0;
+    userInfo.stars = $('.stars li').children().length;
     $('.stars li').children().attr('class', 'fa fa-star');
-    $('.moves').html(user_info.move_step); //user move step number
-    cards_init() //初始化已翻牌卡牌
-    get_math_random(); //生成随即卡牌场景
-    clearInterval(time_id);
+    $('.moves').html(userInfo.moveStep); //user move step number
+    cardsInit() //初始化已翻牌卡牌
+    getMathRandom(); //生成随即卡牌场景
+    clearInterval(timeId);
 }
 $('.restart').click(function() { //游戏重开
-    game_init();
+    checkGame();
+    gameInit();
 });
 
 $(".card").click(function() { //监听用户动作
-    if (user_info.move_step == 0) {
-        time_start(); //开始计时
+    if (userInfo.moveStep == 0) {
+        timeStart(); //开始计时
     }
     if ($(".open").length < 2) { //锁定同时翻开卡牌数量
         $(this).attr('class', 'card open show');
-        user_info.move_step++;
-        $('.moves').html(user_info.move_step);
     } else {
         return;
     }
     if ($(".open").length == 1) { //判断翻开卡牌是否为同一个
-        user_info.first_click = $(this);
+        userInfo.firstClick = $(this);
     } else if ($(".open").length == 2) {
-        user_info.second_click = $(this);
-        if (check_match(user_info.first_click, user_info.second_click)) { //匹配相同
-            trun_to_match(user_info.first_click, user_info.second_click);
-            user_info.first_click = user_info.second_click = '';
-            user_info.point++;
-            check_game(); //监听游戏状态
+        userInfo.moveStep++;
+        $('.moves').html(userInfo.moveStep);
+        userInfo.secondClick = $(this);
+        if (checkMatch(userInfo.firstClick, userInfo.secondClick)) { //匹配相同
+            trunToMatch(userInfo.firstClick, userInfo.secondClick);
+            userInfo.firstClick = userInfo.secondClick = '';
+            userInfo.point++;
+            checkGame(); //监听游戏状态
         } else {
-            time_count(user_info.first_click, user_info.second_click); //匹配不同
+            timeCount(userInfo.firstClick, userInfo.secondClick); //匹配不同
         }
 
     } else {
@@ -93,63 +94,68 @@ $(".card").click(function() { //监听用户动作
     }
 });
 
-function time_start() {
+function timeStart() {
     var i = 0;
-    time_id = self.setInterval(function() {
-        user_info.seconds++;
-        if (user_info.seconds == 100 || user_info.seconds == 30 || user_info.seconds == 50) {
-            remove_star(i); //remove star
+    timeId = self.setInterval(function() {
+        userInfo.seconds++;
+        if (userInfo.seconds == 30 || userInfo.seconds == 50 || userInfo.moveStep >= 25) {
+            removeStar(i); //remove star
             i++;
         }
     }, 1000);
 }
 
-function remove_star(i) {
-    $(".stars li:eq(" + i + ")").children().attr('class', 'fa fa-star-o');
-    user_info.stars--;
+function removeStar(i) {
+    $(`.stars li:eq(${i})`).children().attr('class', 'fa fa-star-o');
+    userInfo.stars--;
 
 }
 
-function time_count(first_card, second_card) {
-    if (!first_card || !second_card) {
+function timeCount(firstCard, secondCard) {
+    if (!firstCard || !secondCard) {
         console.log('no first card or second card')
         return;
     }
     setTimeout(function() {
-        if (first_card.attr('class') == 'card open show' && second_card.attr('class') == 'card open show') {
-            first_card.attr('class', 'card');
-            second_card.attr('class', 'card');
+        if (firstCard.attr('class') == 'card open show' && secondCard.attr('class') == 'card open show') {
+            firstCard.attr('class', 'card');
+            secondCard.attr('class', 'card');
         }
     }, 500);
 }
 
-function check_match(first_card, second_card) {
-    if (!first_card || !second_card) {
+function checkMatch(firstCard, secondCard) {
+    if (!firstCard || !secondCard) {
         return;
     }
-    return (first_card.children('i').attr('class') == second_card.children('i').attr('class')) ? true : false;
+    return (firstCard.children('i').attr('class') == secondCard.children('i').attr('class')) ? true : false;
 }
 
-function check_game() {
+function checkGame() {
+
     if ($(".match").length == 16) {
         setTimeout(function() {
-            alert('win point:' + user_info.point + ' stars: ' + user_info.stars)
+            $('#myModalCloss').after(`<p>win point:${userInfo.point} stars: ${userInfo.stars} time: ${userInfo.seconds}</p>`);
+            document.getElementById('myModal').style.display = "block";
+            $('#myModalCloss').click(function() {
+                document.getElementById('myModal').style.display = "none";
+            });
         }, 1500);
-        clearInterval(time_id);
+        clearInterval(timeId);
     }
 }
 
-function trun_to_match(first_card, second_card) {
-    if (!first_card || !second_card) {
+function trunToMatch(firstCard, secondCard) {
+    if (!firstCard || !secondCard) {
         return;
     }
-    first_card.attr('class', 'card match');
-    second_card.attr('class', 'card match');
+    firstCard.attr('class', 'card match');
+    secondCard.attr('class', 'card match');
 }
 
 
 
-function cards_init() {
+function cardsInit() {
     $.each($('.open'), function() {
         $(this).attr('class', 'card');
     });
@@ -158,17 +164,17 @@ function cards_init() {
     });
 }
 
-function get_math_random() {
-    li_array = [];
+function getMathRandom() {
+    liArray = [];
     var stack = [];
     for (var i = 0; i < 16; i++) {
         stack.push(i);
     }
     while (stack.length) {
-        li_array.push(stack.splice(parseInt(Math.random() * stack.length), 1)[0]);
+        liArray.push(stack.splice(parseInt(Math.random() * stack.length), 1)[0]);
     }
     $.each($('.deck').children(), function(i, n) {
-        $(this).children().attr('class', all_cards[li_array[i]]);
+        $(this).children().attr('class', allCards[liArray[i]]);
     });
 }
 
