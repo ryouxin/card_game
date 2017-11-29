@@ -64,6 +64,9 @@ $('.restart').click(function() { //游戏重开
 });
 
 $(".card").click(function() { //监听用户动作
+    if ($(this).attr('class') == 'card match') {
+        return;
+    }
     if (userInfo.moveStep == 0) {
         timeStart(); //开始计时
     }
@@ -98,9 +101,12 @@ function timeStart() {
     var i = 0;
     timeId = self.setInterval(function() {
         userInfo.seconds++;
-        if (userInfo.seconds == 30 || userInfo.seconds == 50 || userInfo.moveStep >= 25) {
-            removeStar(i); //remove star
-            i++;
+        if (userInfo.seconds == 30 || userInfo.seconds == 50 || userInfo.moveStep >= 15) {
+            if (i < 2) {
+                removeStar(i); //remove star
+                i++;
+            }
+
         }
     }, 1000);
 }
