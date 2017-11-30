@@ -45,7 +45,7 @@ var userInfo = {
 
 }
 var timeId = null;
-gameInit()
+gameInit();
 //游戏初始化
 function gameInit() {
     userInfo.point = 0;
@@ -59,7 +59,7 @@ function gameInit() {
     clearInterval(timeId);
 }
 $('.restart').click(function() { //游戏重开
-    checkGame();
+    // checkGame();
     gameInit();
 });
 
@@ -67,7 +67,7 @@ $(".card").click(function() { //监听用户动作
     if ($(this).attr('class') == 'card match') {
         return;
     }
-    if (userInfo.moveStep == 0) {
+    if (userInfo.moveStep === 0) {
         timeStart(); //开始计时
     }
     if ($(".open").length < 2) { //锁定同时翻开卡牌数量
@@ -97,12 +97,13 @@ $(".card").click(function() { //监听用户动作
     }
 });
 
+
 function timeStart() {
     var i = 0;
     timeId = self.setInterval(function() {
         userInfo.seconds++;
         if (userInfo.seconds == 30 || userInfo.seconds == 50 || userInfo.moveStep >= 15) {
-            if (i < 2) {
+            if (userInfo.stars > 1) {
                 removeStar(i); //remove star
                 i++;
             }
@@ -140,8 +141,14 @@ function checkMatch(firstCard, secondCard) {
 function checkGame() {
 
     if ($(".match").length == 16) {
+        var html = '';
+        for (var i = 0; i < userInfo.stars; i++) {
+            html += '<i class="fa fa-star"></i>'
+        }
         setTimeout(function() {
-            $('#myModalCloss').after(`<p>win point:${userInfo.point} stars: ${userInfo.stars} time: ${userInfo.seconds}</p>`);
+            document.getElementById('userPointInfo').innerHTML = `win point:${userInfo.point} stars:${html} time: ${userInfo.seconds}`;
+            // $('#userPointInfo').append(`win point:${userInfo.point} stars: ${userInfo.stars} time: ${userInfo.seconds}`);
+            // $('#myModalCloss').after(`<p>win point:${userInfo.point} stars: ${userInfo.stars} time: ${userInfo.seconds}</p>`);
             document.getElementById('myModal').style.display = "block";
             $('#myModalCloss').click(function() {
                 document.getElementById('myModal').style.display = "none";
@@ -183,6 +190,10 @@ function getMathRandom() {
         $(this).children().attr('class', allCards[liArray[i]]);
     });
 }
+$('#replayGame').click(function() {
+    gameInit();
+    document.getElementById('myModal').style.display = "none";
+});
 
 function shuffle(array) {
     var currentIndex = array.length,
