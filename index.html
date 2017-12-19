@@ -1,152 +1,173 @@
-<!doctype html>
 <html lang="en">
 
 <head>
 	<meta charset="utf-8">
-	<title>Matching Game</title>
-	<meta name="description" content="">
-	<link rel="stylesheet prefetch" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.1/css/font-awesome.min.css">
-	<link rel="stylesheet prefetch" href="https://fonts.googleapis.com/css?family=Coda">
-	<link rel="stylesheet" href="css/app.css">
-	<script src="js/jquery-3.2.1.min.js"></script>
+	<title>战火与荣耀</title>
+
 	<style type="text/css">
-		/* The Modal (background) */
+		.footer {
+			width: 980px;
+			margin: 5px auto 10px auto;
+			text-align: left;
+			color: #5e5e5e;
+			position: relative;
+			font-family: "微软雅黑";
+		}
 
-		.modal {
-			display: none;
-			/* Hidden by default */
-			position: fixed;
-			/* Stay in place */
-			z-index: 1;
-			/* Sit on top */
-			left: 0;
-			top: 0;
-			width: 100%;
-			/* Full width */
-			height: 100%;
-			/* Full height */
+		.footer p {
+			text-align: left;
+			line-height: 26px;
+		}
+
+		.fot-2460webname {
+			color: #ff5200;
+			font-weight: 700;
+		}
+
+		.fot-2460webname:hover {
+			color: #ff5100;
+		}
+
+		.f-corp-info {
+			color: #71747d;
+			margin: 0 10px 0 6px;
+		}
+
+		.f-corp-info:hover {
+			color: #ff4b01;
+		}
+
+		.footer-ico {
+			position: absolute;
+			background: url(/Tpl/Template_www/images/logo.png) no-repeat 0 0;
+		}
+
+		.footer-ico-1 {
+			top: 0px;
+			right: 8px;
+			width: 230px;
+			height: 80px;
+			background-position: 0px 0;
+		}
+
+		#bbox {
+			width: 980px;
+			height: 3340px;
 			overflow: auto;
-			/* Enable scroll if needed */
-			background-color: rgb(0, 0, 0);
-			/* Fallback color */
-			background-color: rgba(0, 0, 0, 0.4);
-			/* Black w/ opacity */
-		}
-		/* Modal Content/Box */
-
-		.modal-content {
-			background-color: #fefefe;
-			margin: 15% auto;
-			/* 15% from the top and centered */
-			padding: 20px;
-			border: 1px solid #888;
-			width: 80%;
-			/* Could be more or less, depending on screen size */
-		}
-		/* The Close Button */
-
-		.close {
-			color: #aaa;
-			float: right;
-			font-size: 28px;
-			font-weight: bold;
+			background-image: url("/img/dwsd.jpg");
+			overflow: hidden;
+			background-repeat: no-repeat;
+			background-size: 100%;
+			margin-left: auto;
+			margin-right: auto;
 		}
 
-		.close:hover,
-		.close:focus {
-			color: black;
-			text-decoration: none;
-			cursor: pointer;
+		#banner {
+			background-size: 100%;
+			background-image: url("/img/blackLine.png");
+			height: 130px;
+			padding: 10px;
+		}
+
+		#icon {
+			background-repeat: no-repeat;
+			background-size: 100%;
+			background-image: url("/img/icon.png");
+			height: 130px;
+			width: 130px;
+			float: left;
+		}
+
+		#desc {
+			padding-left: 10px;
+			float: left;
+		}
+
+		.btnDowload {
+			background-image: url("/img/T-1.jpg");
+			background-repeat: no-repeat;
+			background-size: 100%;
+			width: 440px;
+			height: 130px;
+			margin: 8px;
+		}
+
+		.btnPresent {
+			background-image: url("/img/T-3.jpg");
+			background-repeat: no-repeat;
+			background-size: 100%;
+			width: 440px;
+			height: 130px;
+			margin: 8px;
 		}
 	</style>
 </head>
 
-<body>
-
-	<div class="container">
-		<header>
-			<h1>Matching Game</h1>
-		</header>
-
-		<section class="score-panel">
-			<ul class="stars">
-				<li><i class="fa fa-star"></i></li>
-				<li><i class="fa fa-star"></i></li>
-				<li><i class="fa fa-star"></i></li>
-			</ul>
-
-			<span class="moves">0</span> Moves
-
-			<div class="restart">
-				<i class="fa fa-repeat"></i>
+<body style="margin:0px">
+	<div id='bbox'>
+		<!-- <div id='banner'>
+			<div id='icon'></div>
+			<div id='desc'>
+				<span style="font-size:40px;font-weight:500;color:white;">战火与荣耀</span>
+				<div>
+					<p style="float:left;font-size:25px;font-weight:400;color:white;margin:0px;">评分 </p>
+					<div style="float:left;padding-top:8px;padding-left:5px;">
+						<img src='/img/star.png'><img src='/img/star.png'><img src='/img/star.png'><img src='/img/star.png'><img src='/img/star.png'>
+					</div>
+				</div>
+				<div style="float:left">
+					<p style="color:white;font-size:25px;margin:0px"><span style="color:red;font-size:25px;font-weight:600">9970</span>万次下载</p>
+				</div>
 			</div>
-		</section>
-
-		<ul class="deck">
-			<li class="card">
-				<i class="fa fa-diamond"></i>
-			</li>
-			<li class="card">
-				<i class="fa fa-paper-plane-o"></i>
-			</li>
-			<li class="card">
-				<i class="fa fa-anchor"></i>
-			</li>
-			<li class="card">
-				<i class="fa fa-bolt"></i>
-			</li>
-			<li class="card">
-				<i class="fa fa-cube"></i>
-			</li>
-			<li class="card">
-				<i class="fa fa-anchor"></i>
-			</li>
-			<li class="card">
-				<i class="fa fa-leaf"></i>
-			</li>
-			<li class="card">
-				<i class="fa fa-bicycle"></i>
-			</li>
-			<li class="card">
-				<i class="fa fa-diamond"></i>
-			</li>
-			<li class="card">
-				<i class="fa fa-bomb"></i>
-			</li>
-			<li class="card">
-				<i class="fa fa-leaf"></i>
-			</li>
-			<li class="card">
-				<i class="fa fa-bomb"></i>
-			</li>
-			<li class="card">
-				<i class="fa fa-bolt"></i>
-			</li>
-			<li class="card">
-				<i class="fa fa-bicycle"></i>
-			</li>
-			<li class="card">
-				<i class="fa fa-paper-plane-o"></i>
-			</li>
-			<li class="card">
-				<i class="fa fa-cube"></i>
-			</li>
-		</ul>
-	</div>
-	<div id="myModal" class="modal">
-
-		<!-- Modal content -->
-		<div class="modal-content">
-			<span id='myModalCloss' class="close">&times;</span>
-			<p id='userPointInfo'></p>
-			<p>重新开始：<span id='replayGame' class="fa fa-repeat"></span></p>
-
+			<div class="btnDowload" style="float:right">
+			</div>
 		</div>
+		<div class='btnDowload' style="margin-left:auto;margin-right:auto;margin-top: 620px;">
+		</div>
+		<div class='btnPresent' style="margin-left:auto;margin-right:auto;margin-top: 510px;">
+		</div>
+		<div class='btnDowload' style="margin-left:auto;margin-right:auto;margin-top: 1580px;">
+		</div>
+		<div class="footer">
 
+			<p>版权所有 二四六零（镇江）智慧社区信息服务有限公司
+				<BR>
+				<a title="苏ICP备16054761号" class="fot-2460webname" href="http://www.miitbeian.gov.cn" target="_blank">苏ICP备16054761号</a> 苏网文〔2017〕2964-068号 增值电信业务经营许可证 苏B2-20170193<br/>
+
+				<!-- <a class="f-corp-info" href="/service/aboutus" target="_blank" rel="nofollow">关于我们</a>|
+
+		   <a class="f-corp-info" href="/service/business/" target="_blank" rel="nofollow">商务合作</a>|
+
+		   <a class="f-corp-info" href="/service/" target="_blank" rel="nofollow">客服中心</a>|
+
+		   <a class="f-corp-info" href="/article/jiazhangjianhu" target="_blank" rel="nofollow">家长监护</a>|
+
+		   <a class="f-corp-info" href="/sitemap.xml" target="_blank">网站地图</a> | -->
+
+		<!-- <script language="javascript" type="text/javascript" src="http://js.users.51.la/17755140.js"></script>| -->
+
+		<!-- <script type="text/javascript">
+
+			var _bdhmProtocol = (("https:" == document.location.protocol) ? " https://" : " http://");
+
+			document.write(unescape("%3Cscript src='" + _bdhmProtocol + "hm.baidu.com/h.js%3Fc19f2f18384ff3194ce82b858c69b677' type='text/javascript'%3E%3C/script%3E"));
+
+			</script> -->
+
+		</p>
+
+		<p class="footer-info-2">
+			<!--上海都玩网络科技有限公司 苏ICP备16054761号 沪网文苏网文〔2017〕2964-068号  增值电信业务经营许可证 苏B2-20170193  -->
+		</p>
+
+		<p>抵制不良游戏，拒绝盗版游戏。 注意自我保护，谨防受骗上当。 适度游戏益脑，沉迷游戏伤身。 合理安排时间，享受健康生活。</p>
+
+		<a title="二四六零网页游戏平台" class="footer-ico footer-ico-1" href="/" target="_blank"></a>
+
+
+	</div> -->
 	</div>
-
-	<script src=" js/app.js "></script>
-
+	<!-- <img src ="/img/BG-1.jpg"> -->
 
 </body>
 
