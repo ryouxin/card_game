@@ -182,11 +182,14 @@ function getMathRandom() {
     var stack = [];
     for (var i = 0; i < 16; i++) {
         stack.push(i);
+        console.log(stack[i]);
     }
     while (stack.length) {
         liArray.push(stack.splice(parseInt(Math.random() * stack.length), 1)[0]);
     }
+    console.log(liArray); //创建随机数组
     $.each($('.deck').children(), function(i, n) {
+        console.log(allCards[liArray[i]]); //根据随即数组 liarray 为key 取 allcards value
         $(this).children().attr('class', allCards[liArray[i]]);
     });
 }
